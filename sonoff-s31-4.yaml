@@ -1,20 +1,39 @@
+
+    
 # Sonoff S31 Smart WiFi Plug
 #
+# SEE ALSO
 # 1. https://devices.esphome.io/devices/Sonoff-S31
+# 2. curl -X POST http://sonoff-s31-4.ha.home/switch/relay/turn_on
+# 3. curl -X POST http://sonoff-s31-4.ha.home/switch/relay/turn_off
 #
+# [1]: IMPORTANT(JEFF): Avoid the potential scenario where lack 
+# of comms with this component invokes an automatic restart of 
+# the device node. This is by design and is intended to act as
+# an aid in automatic comms "healing".
+#
+# This particular smart plug serves a mission critical purpose
+# and is presently immune to the above "patching" only because
+# of the relay switch's restore_mode attribute being always on.
+# If this were to change inadvertedly, this patch is the only
+# other failsafe to not bringing our home Internet connection 
+# down every 15 minutes or so...
 ---
 
-# Enable usage with Home Assistant APIs
-#
-# NOTE(JEFF): This has the side effect of restarting this 
-# device once every ~30 minutes if it is unable to contact
-# the HA server; this is by design.
+# Enable Home Assistant API
 api:
+  # See [IMPORTANT][1] note
+  reboot_timeout: 0s
   encryption:
-    key: !secret api3_key
+    key: "3lyi41gBELYLHzm59RVsTR4De0BZWfaqQK4TC4kUUvs="
+
+ota:
+  - platform: esphome
+    password: "89fc8e07fe002750b984e70d1cd90e63"
 
 packages:
   #ota: !include configs/ota.yml
+  #sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
   logger_sonoff: !include configs/sonoff-s31/logger.yml
@@ -22,6 +41,7 @@ packages:
   mqtt_client: !include configs/mqtt.yml
   ntp_time: !include configs/time.yml
   prometheus: !include configs/prometheus.yml
+  sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
   sonoff_project: !include configs/sonoff-s31/project.yml
@@ -31,25 +51,25 @@ packages:
   webserver: !include configs/webserver.yml
   wifi: !include configs/wifi.yml
 
-<<: !include configs/development.yml
-#<<: !include configs/production.yml
-
-ota:
-  - platform: esphome
-    #password: !secret ota_password
-    password: "abffc54758f6383fc4c48dfa592bbe41"
+#<<: !include configs/development.yml
+<<: !include configs/production.yml
 
 esphome:
-  # IMPORTANT(JEFF): Match the filename 1:1 without file extension, including the prefixed `.`
-  # NOTE(JEFF): The name becomes the hostname that is given to this device. It will be advertised
-  # via mDNS as {lower_devicename}.local and will also be assigned the assigned wifi domain 
-  # value (.lan).
-  name: "sonoff-s31-3"
-  friendly_name: "(TV) Fan #2"
-  area: Bedroom
+  name: "sonoff-s31-4"
+  friendly_name: "pve1-psu-relay"
+  area: "Bedroom"
 
 esp8266:
   early_pin_init: false
+
+wifi:
+  output_power: 10.00
+  # See [IMPORTANT][1] note
+  #reboot_timeout: 0s
+
+mqtt:
+  # See [IMPORTANT][1] note
+  #reboot_timeout: 0s
 
 binary_sensor:
   - platform: gpio
@@ -106,6 +126,6 @@ switch:
     name: "Relay"
     pin: GPIO12
     id: relay
+    # restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
     restore_mode: RESTORE_DEFAULT_ON
-    #restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
 

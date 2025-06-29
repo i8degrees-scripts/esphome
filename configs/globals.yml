@@ -1,0 +1,25 @@
+# Common environment variables
+#
+#
+# SEE ALSO
+#
+# 1. https://static.xtremeownage.com/blog/2023/esphome-on-critical-infrastructure/#how-to-add-a-confirm-button
+# 2. https://esphome.io/components/globals.html
+---
+
+globals:
+    # Global boolean containing value if confirm is selected.
+  - id: confirm_restart
+    type: bool
+    restore_value: no
+    # When the device is restarted, default the false / off.
+    initial_value: "false"
+    # TODO(JEFF): This needs to be implemented for the sake of
+    # abstraction; we should not rely on the given name always
+    # being the same!
+  #- id: relay_switch_name
+    #type: std::string
+    #initial_value: "relay_switch"
+    #max_restore_data_length: 32
+    #restore_value: no
+

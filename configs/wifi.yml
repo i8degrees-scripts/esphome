@@ -4,6 +4,7 @@
 ---
 
 wifi:
+  id: wifi_conn
   power_save_mode: light
   domain: .ha.home
   # WARNING(JEFF): This value is likely to require further tweaks before

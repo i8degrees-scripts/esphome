@@ -13,3 +13,5 @@ esphome:
     name: i8degrees.esp8266
     version: 1.0.0
 
+#<<: !include configs/globals.yml
+

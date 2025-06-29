@@ -3,10 +3,27 @@
 # Generic sensor for provisioning wifi signal
 #
 # SEE ALSO
-# 1. https://esphome.io/components/sensor/index.html#
+# 1. https://esphome.io/components/sensor/wifi_signal#
+# 2. https://esphome.io/components/sensor/index.html#
 ---
+
 sensor:
+  # NOTE(JEFF): Reports the WiFi signal strength/RSSI in dB
   - platform: wifi_signal
-    name: "WiFi Signal"
+    name: "WiFi Signal dB"
+    id: wifi_signal_db
     update_interval: 60s
+    entity_category: "diagnostic"
+    state_class: measurement
+    device_class: SIGNAL_STRENGTH
+  # NOTE(JEFF): Reports the WiFi signal in %
+  - platform: copy
+    source_id: wifi_signal_db
+    name: "WiFi Signal Percent"
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "%"
+    entity_category: "diagnostic"
+    state_class: measurement
+    device_class: SIGNAL_STRENGTH
 

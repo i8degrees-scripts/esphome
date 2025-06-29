@@ -1,20 +1,26 @@
 # Sonoff S31 Smart WiFi Plug
 #
+# *...*
+#
+# SEE ALSO
 # 1. https://devices.esphome.io/devices/Sonoff-S31
 #
 ---
 
-# Enable usage with Home Assistant APIs
-#
-# NOTE(JEFF): This has the side effect of restarting this 
-# device once every ~30 minutes if it is unable to contact
-# the HA server; this is by design.
+# Enable Home Assistant API
 api:
+  reboot_timeout: 0s
   encryption:
-    key: !secret api3_key
+    key: "HUhhlTMhalRJfGGBnril5o1wsYIlSXQ9+iawVNPwTF4="    
+#key: "lvtvETD3z4sUIx5QuRcbIYqM+JpEEaXqCiJ1r20qp2M="
+
+ota:
+  - platform: esphome
+    password: "a2d142f00ae9c74a444aa61cbd8d74d9"
 
 packages:
   #ota: !include configs/ota.yml
+  #sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
   logger_sonoff: !include configs/sonoff-s31/logger.yml
@@ -34,18 +40,13 @@ packages:
 <<: !include configs/development.yml
 #<<: !include configs/production.yml
 
-ota:
-  - platform: esphome
-    #password: !secret ota_password
-    password: "abffc54758f6383fc4c48dfa592bbe41"
-
+wifi:
+  output_power: 20.0
+   
+# Basic Config
 esphome:
-  # IMPORTANT(JEFF): Match the filename 1:1 without file extension, including the prefixed `.`
-  # NOTE(JEFF): The name becomes the hostname that is given to this device. It will be advertised
-  # via mDNS as {lower_devicename}.local and will also be assigned the assigned wifi domain 
-  # value (.lan).
-  name: "sonoff-s31-3"
-  friendly_name: "(TV) Fan #2"
+  name: "sonoff-s31-6"
+  friendly_name: "energy-logging"
   area: Bedroom
 
 esp8266:
@@ -106,6 +107,6 @@ switch:
     name: "Relay"
     pin: GPIO12
     id: relay
+    # restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
     restore_mode: RESTORE_DEFAULT_ON
-    #restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
 

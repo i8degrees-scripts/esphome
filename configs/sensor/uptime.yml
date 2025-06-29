@@ -1,0 +1,13 @@
+# Uptime sensor
+#
+#
+# SEE ALSO
+# 1. 
+---
+
+sensor:
+  - platform: uptime
+    name: Uptime
+    state_class: measurement
+    device_class: duration
+

@@ -1,0 +1,20 @@
+# Confirmation restart switch
+#
+#
+#
+# 1. https://static.xtremeownage.com/blog/2023/esphome-on-critical-infrastructure/#how-to-add-a-confirm-button
+---
+
+switch:
+  - platform: template
+    name: Confirm Restart
+    id: confirm_restart_sw
+    icon: mdi:alert
+    lambda: |-
+      return id(confirm_restart);
+    turn_on_action:
+      - lambda: |-
+          id(confirm_restart) = true;
+    turn_off_action:
+      - lambda: |-
+          id(confirm_restart) = false;

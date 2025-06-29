@@ -1,0 +1,36 @@
+# Additional support via MQTT
+#
+# Restart your device via MQTT topic
+#
+#
+# SEE ALSO
+# 1. https://admantium.com/blog/iot16_home_assistant_mqtt_integration/
+# 2. `config/switch/restart.yml`
+---
+
+mqtt:
+  # getters; react to configuration changes
+  on_message:
+    # esp-probe-1/reboot
+    - topic: "esp/reboot"
+      payload: "OFF" # false
+      then:
+        - lambda: |-
+            ESP_LOGD("INFO", "Turning off warm reboot from received MQTT message...");
+            delay(100);
+        - switch.turn_off: switch_restart
+    # esp-probe-1/reboot
+    - topic: "esp/reboot"
+      payload: "ON" # true
+      then:
+        - lambda: |-
+            ESP_LOGD("INFO", "Warm rebooting device from received MQTT message...");
+            delay(100);
+        - switch.turn_on: switch_restart
+          # TODO(JEFF): Verify whether we need to manually reset the state
+          # after arming the restart switch. What happens if the state is
+          # left as-is -- do we enter an infinite reboot loop???
+          #then:
+            #- lambda: |-
+              #//mqtt.publish_state("OFF");
+              #delay(100);

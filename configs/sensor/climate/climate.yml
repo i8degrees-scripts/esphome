@@ -1,0 +1,33 @@
+# Temperature & Relative Humidity sensor
+#
+# SEE ALSO
+# 1. configs/sensor/climate/climate_dht11.yml
+# 1. configs/sensor/climate/absolute_humidity.yml
+---
+
+sensor:
+  - platform: dht
+    update_interval: 300s # 5min
+    model: DHT22
+    pin: 4 # D4; GPIO2 (TXD1)
+    temperature:
+      id: temp_c
+      name: "Temperature in Cel"
+      #accuracy_decimals: 1
+    humidity:
+      id: rh
+      name: "Relative Humidity"
+      # NOTE(JEFF): The default here is zero and is intended
+      # for the original DHT11 model. We use a DHT22 with
+      # the increased resolution, so 1 is a better choice.
+      accuracy_decimals: 1
+  # FIXME(JEFF):
+  - platform: template
+    id: temp_f
+    name: "Temperature in F"
+    #update_interval: 30min
+    filters:
+      - lambda: |-
+          return x * (9.0/5.0) + 32.0;
+    unit_of_measurement: "°F"
+

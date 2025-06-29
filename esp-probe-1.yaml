@@ -12,6 +12,10 @@
 #
 # a) running this probe on no more than a couple double AA batteries (~3.2V) or perhaps 3V lithium coin cell; best case
 # b) running this probe on no more than 1 16850 lithium-ion battery cell (~3.7V) or perhaps even a ~75W square cell type.
+#
+# SEE ALSO
+# 1. https://esphome.io/components/climate/pid#
+#
 ---
 
 # Enable Home Assistant API
@@ -19,18 +23,31 @@ api:
   encryption:
     key: "Loj3XMT69cn+PVuuGEiWWU5c5LZw3a148rGgsJYuUWg="
 
+esphome:
+  name: esp-probe-1
+  #friendly_name: esp-climate-1
+  area: Bedroom
+
 packages:
-  climate_dht22: !include configs/sensor/climate_dht22.yml
-  esp12_gpios: !include configs/esp8266/esp12/gpios.yml
+  #esp8266_platform: !include configs/esp8266/esp12/platform.yml
+  #esp12_gpios: !include configs/esp8266/esp12/gpios.yml
   esp12_led_blue: !include configs/esp8266/esp12/led_blue.yml
-  esp8266_deep_sleep: !include configs/esp8266/deep_sleep.yml
-  esp8266_platform: !include configs/esp8266/esp12/platform.yml
+  esp8266_deep_sleep: !include configs/esp8266/deep_sleep/deep_sleep.yml
+  esp8266_mqtt_deep_sleep: !include configs/esp8266/deep_sleep/mqtt.yml
+  esp8266_nodemcuv2: !include configs/esp8266/nodemcuv2/platform.yml
   esp8266_project: !include configs/esp8266/project.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
   esphome_ota: !include configs/ota.yml
   mdns_host: !include configs/mdns.yml
   mqtt_client: !include configs/mqtt.yml
   ntp_time: !include configs/time.yml
+  sensor_abs_humidity: !include configs/sensor/climate/absolute_humidity.yml
+  sensor_adc: !include configs/sensor/adc.yml
+  sensor_dht22: !include configs/sensor/climate/climate.yml
+  sensor_mqtt_restart: !include configs/switch/mqtt_restart.yml
+  sensor_mqtt_wifi_output_power: !include configs/sensor/mqtt_wifi_output_power.yml
+  sensor_sleep_time: !include configs/esp8266/deep_sleep/sensor/sleep_time.yml
+  sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
   switch_restart: !include configs/switch/restart.yml
@@ -38,21 +55,16 @@ packages:
   webserver: !include configs/webserver.yml
   wifi: !include configs/wifi.yml
 
+#substitutions:
+  #devicename: esp-probe-1
+  #run_duration: 60s
+  #sleep_duration: 29min
+
+#substitutions:
+  #devicename: esp-probe-1
+  #run_duration: 60s
+  #sleep_duration: 29min
+
 # NOTE(JEFF): This will include the logger component
 <<: !include configs/development.yml
 #<<: !include configs/production.yml
-
-# IMPORTANT(JEFF): We are overriding one parameter from the wifi 
-# package because we anticipate using this device with the power 
-# source being a battery (lithium-ion) instead of 120V AC mains or 5V USB.
-wifi:
-  power_save_mode: HIGH
-  output_power: 20  
-  
-# 1. https://esphome.io/components/deep_sleep#
-
-esphome:
-  name: esp-probe-1
-  friendly_name: esp-probe-dht22
-  area: Bedroom
-

@@ -6,12 +6,19 @@
 ---
 
 logger:
+  level: WARN
   #level: ${logger_level}
   # We must not use the serial interface for logging because our energy monitoring
   # circuit -- CSE7766 -- uses this upon power up.
   baud_rate: 0
   logs:
     # (Overide any global setting, to VERBOSE will spamming the cse7766 sensors)
-    sensor: INFO
+    sensor: WARN
+    #sensor: ${logger_sensor_component}
+    mqtt.component: WARN
     #mqtt.component: ${logger_mqtt_component}
+    mqtt.client: WARN
     #mqtt.client: ${logger_mqtt_client}
+    wifi.component: WARN
+    #wifi.component: ${logger_wifi_component}
+

@@ -1,0 +1,19 @@
+# Absolute Humidity sensor
+#
+# SEE ALSO
+#
+# 1. `/config/esphome/configs/sensor/climate/climate.yml`
+# 2. https://esphome.io/components/sensor/dht.html
+# 3. https://esphome.io/components/sensor/absolute_humidity
+#
+---
+
+sensor:
+  - platform: absolute_humidity
+    name: Absolute Humidity
+    # NOTE(JEFF): This refers back to the id definition [1] for our
+    # temperature sensor.
+    temperature: temp_c
+    # NOTE(JEFF): This refers back to the id definition [1] for our humidity
+    # sensor.
+    humidity: rh

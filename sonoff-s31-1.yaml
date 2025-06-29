@@ -26,6 +26,7 @@ packages:
   ntp_time: !include configs/time.yml
   ota: !include configs/ota.yml
   prometheus: !include configs/prometheus.yml
+  sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
   sonoff_project: !include configs/sonoff-s31/project.yml
@@ -40,13 +41,13 @@ packages:
 #<<: !include configs/production.yml
 
 esphome:
-  name: "sonoff-s31-1"  
+  name: "sonoff-s31-1"
   friendly_name: "(Desk) Fan #1"
   area: Bedroom
 
 esp8266:
   early_pin_init: false
-    
+
 binary_sensor:
   - platform: gpio
     pin:

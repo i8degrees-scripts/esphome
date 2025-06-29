@@ -1,0 +1,28 @@
+# Confirmation restart button
+#
+#
+# SEE ALSO
+#
+# 1. `esphome/configs/switch/confirm-restart.yml`
+# 2. https://static.xtremeownage.com/blog/2023/esphome-on-critical-infrastructure/#how-to-add-a-confirm-button
+---
+
+button:
+  - platform: template
+    name: Power Cycle
+    icon: mdi:restart-alert
+    on_press:
+      - if:
+          condition:
+              # Get the current value of the global variable.
+              lambda: 'return id(confirm_restart);'
+          then: # Below actions are ONLY executed, if the confirm switch is toggled on.
+            # Turn off confirm switch after cycling relay, to greatly reduce the chance of the device being power cycled again.
+            - switch.turn_off: confirm_restart_sw
+            # Turn off the relay.
+            - switch.turn_off: relay_switch
+            # Wait a half second before turning the relay back on.
+            - delay: 0.5s
+            # Turn on the relay.
+            - switch.turn_on: relay_switch
+

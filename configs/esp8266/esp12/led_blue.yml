@@ -1,14 +1,21 @@
+# ESP8266 status LED heartbeat template
 #
-#
-#
+# SEE ALSO
+# 1. https://esphome.io/components/light/status_led
+# 2. https://esphome.io/components/light/binary
+# 3. https://esphome.io/guides/configuration-types.html
 #
 ---
 
 # Toggle switch for status LED
-switch:
-  - platform: gpio
-    id: blue_led
-    name: status_led
-    pin: GPIO2 # LED_BUILTIN  
-    inverted: True
+light:
+  - platform: status_led
+    name: blue_led
+    # LED_BUILTIN
+    pin:
+      number: GPIO2
+      inverted: True
+      # TODO(JEFF): I am not yet certain that this should be done;
+      # we must verify that this is the correct use.
+      #allow_other_uses: true
     restore_mode: RESTORE_DEFAULT_ON

@@ -6,7 +6,7 @@
 # working on a project.
 #
 # SEE ALSO
-# 1. esphome/configs/production.yml 
+# 1. esphome/configs/production.yml
 # 2. https://esphome.io/components/logger.html
 ---
 
@@ -15,4 +15,5 @@ logger:
   logs:
     mqtt.component: DEBUG
     mqtt.client: DEBUG
+    wifi.component: DEBUG
     #sensor: DEBUG

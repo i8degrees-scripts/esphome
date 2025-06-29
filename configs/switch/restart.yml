@@ -5,6 +5,11 @@
 # SEE ALSO
 # 1. https://esphome.io/components/switch/restart
 ---
+# TODO(JEFF): Rename this type to button (from switch)
+# TODO(JEFF): Relocate file to configs/button/restart.yml
 switch:
   - platform: restart
     name: "Warm Reboot"
+    id: switch_restart
+    icon: "mdi:restart"
+    entity_category: diagnostic

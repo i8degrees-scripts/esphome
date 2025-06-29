@@ -1,0 +1,283 @@
+# 1. https://community.home-assistant.io/t/why-are-my-esps-api-rebooting-every-15-minutes-even-if-they-are-accessible-from-hass/476016
+esphome:
+  name: madmaxbaug
+  platform: ESP32
+  board: esp32doit-devkit-v1
+
+wifi:
+  ssid: "MadMax"
+  password: "censored"
+  manual_ip:
+    static_ip: 192.168.3.101
+    gateway: 192.168.3.1
+    subnet: 255.255.255.0
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "madmaxbaugfallback"
+    password: "censored"
+
+captive_portal:
+
+# Enable logging
+#logger:
+
+ota:
+
+api:
+
+
+mqtt:
+  broker: 192.168.3.1
+  topic_prefix: madmax/madmaxbaug
+  reboot_timeout: 5min
+  birth_message:
+    topic: madmax/oppstart
+    payload: "Mad Max baug har startet"
+    retain: False
+  on_message:
+   - topic: madmax/ask
+     then:
+       - if:
+           condition:
+             lambda: 'return x == "ask";'
+           then:
+             - mqtt.publish:
+                 topic: madmax/driftssjekk
+                 payload: "Mad Max baug er i drift"
+
+   - topic: madmax/madmaxbaug/on
+     payload: "1"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele1
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 1 er allerede på"
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 1 er av, slår på nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele1/state
+                 payload: "ON"
+             - delay: 0.5s
+             - switch.turn_on: baugrele1
+
+   - topic: madmax/madmaxbaug/off
+     payload: "1"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele1
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 1 er på, slår av nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele1/state
+                 payload: "OFF"
+             - delay: 0.5s
+             - switch.turn_off: baugrele1
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 1 er allerede slått av"
+
+   - topic: madmax/madmaxbaug/on
+     payload: "2"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele2
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 2 er allerede på"
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 2 er av, slår på nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele2/state
+                 payload: "ON"
+             - delay: 0.5s
+             - switch.turn_on: baugrele2
+
+   - topic: madmax/madmaxbaug/off
+     payload: "2"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele2
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 2 er på, slår av nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele2/state
+                 payload: "OFF"
+             - delay: 0.5s
+             - switch.turn_off: baugrele2
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 2 er allerede slått av"
+
+   - topic: madmax/madmaxbaug/on
+     payload: "3"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele3
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 3 er allerede på"
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 3 er av, slår på nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele3/state
+                 payload: "ON"
+             - delay: 0.5s
+             - switch.turn_on: baugrele3
+
+   - topic: madmax/madmaxbaug/off
+     payload: "3"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele3
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 3 er på, slår av nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele3/state
+                 payload: "OFF"
+             - delay: 0.5s
+             - switch.turn_off: baugrele3
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 3 er allerede slått av"
+
+   - topic: madmax/madmaxbaug/on
+     payload: "4"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele4
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 4 er allerede på"
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 4 er av, slår på nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele4/state
+                 payload: "ON"
+             - delay: 0.5s
+             - switch.turn_on: baugrele4
+
+   - topic: madmax/madmaxbaug/off
+     payload: "4"
+     then:
+       - if:
+           condition:
+             switch.is_on: baugrele4
+           then:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 4 er på, slår av nå"
+             - mqtt.publish:
+                 topic: madmax/madmaxbaug/switch/rele4/state
+                 payload: "OFF"
+             - delay: 0.5s
+             - switch.turn_off: baugrele4
+           else:
+             - mqtt.publish:
+                 topic: madmax/releer/madmaxbaug
+                 payload: "Mad Max baug relé 4 er allerede slått av"
+   - topic: madmax/madmaxbaug/omstart
+     then:
+       - mqtt.publish:
+           topic: madmax/releer/madmaxbaug
+           payload: "Tar omstart av Mad Max baug"
+       - switch.turn_on: baugomstart
+
+   - topic: madmax/madmaxbaug/omstart
+     then:
+       - mqtt.publish:
+           topic: madmax/omstart
+           payload: "Tar omstart av Mad Max baug"
+       - switch.turn_on: baugomstart
+
+switch:
+  - platform: gpio
+    name: "baugrele1"
+    retain: False
+    id: baugrele1
+    pin:
+      number: 19
+      inverted: True
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    name: "baugrele2"
+    retain: False
+    id: baugrele2
+    pin:
+      number: 18
+      inverted: True
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    name: "baugrele3"
+    retain: False
+    id: baugrele3
+    pin:
+      number: 5
+      inverted: True
+    restore_mode: ALWAYS_OFF
+
+  - platform: gpio
+    name: "baugrele4"
+    retain: False
+    id: baugrele4
+    pin:
+      number: 17
+      inverted: True
+    restore_mode: ALWAYS_OFF
+
+  - platform: restart
+    name: "baugomstart"
+    retain: False
+    id: baugomstart
+
+i2c:
+  - id: bus_a
+    sda: 21
+    scl: 22
+    scan: True
+  - id: bus_b
+    sda: 14
+    scl: 15
+    scan: True
+   
+sensor:
+  - platform: ina219
+    i2c_id: bus_a
+    address: 0x40
+    shunt_resistance: 0.1 ohm
+    bus_voltage:
+      name: "Batterispenning baug"
+    max_voltage: 32.0V
+    max_current: 3.2A
+    update_interval: 60s

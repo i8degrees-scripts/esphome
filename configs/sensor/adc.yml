@@ -1,0 +1,27 @@
+# Generic ESP8266 ADC Template
+#
+# SEE ALSO
+# 1. https://esphome.io/components/esphome#
+#
+---
+
+sensor:
+    # NOTE(JEFF): Board voltage consumption
+  - platform: adc
+    pin: VCC
+    id: "VCC"
+    internal: true
+  - platform: template
+    name: "esp-probe-1.voltage"
+    unit_of_measurement: "V"
+    #update_interval: 30min
+    lambda: |-
+      return id(VCC).state;
+    # NOTE(JEFF): This makes the assumption that we are
+    # using two AA batteries
+  - platform: template
+    name: "esp-probe-1.battery"
+    unit_of_measurement: "%"
+    #update_interval: 30min
+    lambda: |-
+      return ((id(VCC).state) - 3.2) * 100.00;

@@ -10,12 +10,14 @@ time:
   - platform: sntp
     id: sntp_time
     timezone: !secret time_tz
+    # IMPORTANT(JEFF): We have a maximum list cap of 3 here
     servers:
       - "pve3.home"
       - "192.168.12.138"
       #- "time.mynaughty.party"
       - "157.230.183.221"
       # 174.138.108.209
+    update_interval: 12h
     on_time_sync:
       then:
         - logger.log: "The system clock has been synchronized."

@@ -1,0 +1,72 @@
+# Additional ESP8266 [Deep Sleep][0] support via MQTT
+#
+# *...*
+#
+#
+# SEE ALSO
+# 10. https://admantium.com/blog/iot16_home_assistant_mqtt_integration/
+---
+
+# FIXME(JEFF): We must implement / add `deep_sleep.allow` upon successful awaken of device from down below.
+#
+# See the documentation notes for the "Deep Sleep" component.
+
+# NOTE(JEFF): The following additions to the mqtt component 
+# are from a [tutorial[10] that I followed along with for 
+# the deep sleep implementation.
+mqtt:
+  birth_message:
+    topic: "esp/devices" # esp-probe-1/devices
+    payload: "Starting up esp-probe..."
+  will_message:
+    topic: "esp/devices" # esp-probe-1/devices
+    payload: "Shutting down esp-probe..."
+  # getters; react to configuration changes
+  on_message:
+    # OTA
+    # esp-probe-1/ota
+    #- topic: "${unique_id}/ota_mode"
+    - topic: "esp/ota_mode"
+      payload: "OFF"
+      then:
+        - lambda: |-
+            ESP_LOGD("INFO", "Disabling OTA mode...");
+            delay(100);
+        - deep_sleep.allow: deep_sleep_esp8266
+    # OTA
+    # esp-probe-1/ota
+    #- topic: "${unique_id}/ota_mode" 
+    - topic: "esp/ota_mode"
+      payload: "ON"
+      then:
+        - lambda: |-
+            ESP_LOGD("INFO", "Enabling OTA mode...");
+            delay(100);
+        - deep_sleep.prevent: deep_sleep_esp8266
+    # Deep Sleep
+    # esp-probe-1/deep_sleep/sleep_enabled
+    #- topic: "${unique_id}/sleep_mode"
+    - topic: "esp/sleep_mode"
+      payload: "OFF" # false
+      then:
+        - lambda: |-
+            ESP_LOGD("INFO", "Disabling sleep...");
+            delay(100);
+        - deep_sleep.prevent: deep_sleep_esp8266
+    # Deep Sleep
+    # esp-probe-1/deep_sleep/sleep_enabled
+    #- topic: "${unique_id}/sleep_mode"
+    - topic: "esp/sleep_mode"
+      payload: "ON" # true
+      then:
+        - lambda: |-
+            ESP_LOGD("INFO", "Enabling sleep...");
+            delay(100);
+        - deep_sleep.allow: deep_sleep_esp8266
+
+# TODO(JEFF): Consider whether or not we should include 
+# the MQTT subscription bits here. As it is, we import it
+# as a separate package from within the root configuration
+# file.
+#<<: !include configs/esp8266/deep_sleep/sensor/sleep_time.yml
+

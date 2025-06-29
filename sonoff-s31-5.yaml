@@ -1,6 +1,9 @@
 # Sonoff S31 Smart WiFi Plug
 #
+# SEE ALSO
 # 1. https://devices.esphome.io/devices/Sonoff-S31
+# 2. curl -X POST http://sonoff-s31-5.ha.home/switch/relay/turn_on
+# 3. curl -X POST http://sonoff-s31-5.ha.home/switch/relay/turn_off
 #
 # [1]: IMPORTANT(JEFF): Avoid the potential scenario where lack 
 # of comms with this component invokes an automatic restart of 
@@ -15,55 +18,19 @@
 # down every 15 minutes or so...
 ---
 
-packages:
-  time: !include configs/time.yml
-  wifi: !include configs/wifi.yml
-  mqtt: !include configs/mqtt.yml
-  #uart: !include configs/uart.yml
-  #ota: !include configs/ota.yml
-  webserver: !include configs/webserver.yml
-  logger_sonoff: !include configs/sonoff-s31/logger.yml
-  logger: !include configs/production.yml
-  prometheus: !include configs/prometheus.yml
-
-# Basic Config
 esphome:
-  # IMPORTANT(JEFF): Match the filename 1:1 without file extension, including the prefixed `.`
-  # NOTE(JEFF): The name becomes the hostname that is given to this device. It will be advertised
-  # via mDNS as {lower_devicename}.local and will also be assigned the assigned wifi domain 
-  # value (.lan).
   name: "sonoff-s31-5"
   friendly_name: "carpnet-relay-1"
-  #area: Kids Bedroom
+  area: "Kids Bedroom"
 
 esp8266:
-  board: esp12e
-  # IMPORTANT(JEFF): This is strongly recommended [1] to
-  # be (re)-set from the default of TRUE to FALSE for
-  # the switch component type. 
-  # 1. https://esphome.io/components/esp8266.html#configuration-variables
   early_pin_init: false
-  # NOTE(JEFF): This lets us quickly restore the state
-  # of the relay without the need of LAN support.
-  restore_from_flash: true
-    
-# NOTE(JEFF): Ensure that we do not needlessly use up our
-# flash write cycles; this tells ESPHome to wait a full minute
-# in between state changes before writing to memory.
-preferences:
-  flash_write_interval: 1min
 
 # OTA (Over The Air) updates without physical console
 ota:
   - platform: esphome
     #password: !secret ota_password
-    #password: "89fc8e07fe002750b984e70d1cd90e63"
     password: "a2d142f00ae9c74a444aa61cbd8d74d9"
-    # NOTE(JEFF): This ought to prevent the device from
-    # being auto-reset upon firmware update.
-    #
-    # 1. 
-    #safe_mode: false
 
 api:
   # See [IMPORTANT][1] note
@@ -77,11 +44,6 @@ packages:
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
   logger_sonoff: !include configs/sonoff-s31/logger.yml
-  mdns_host: !include configs/mdns.yml
-  mqtt_client: !include configs/mqtt.yml
-  ntp_time: !include configs/time.yml
-  prometheus: !include configs/prometheus.yml
-  sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
   sonoff_project: !include configs/sonoff-s31/project.yml
@@ -116,9 +78,6 @@ binary_sensor:
     name: "Status"
 
 sensor:
-  - platform: wifi_signal
-    name: "WiFi Signal" 
-    update_interval: 60s
   - platform: cse7766
     current:
       name: "Current"
@@ -160,11 +119,7 @@ switch:
   - platform: gpio
     name: "Relay"
     pin: GPIO12
-    id: relay 
+    id: relay
+    # restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
     restore_mode: RESTORE_DEFAULT_ON
-    #restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
 
-status_led:
-  pin:
-    number: GPIO13
-    inverted: True

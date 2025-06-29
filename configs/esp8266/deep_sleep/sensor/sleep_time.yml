@@ -1,0 +1,42 @@
+# Additional ESP8266 [Deep Sleep][0] support via MQTT
+#
+# *...*
+#
+#
+# SEE ALSO
+# 1. https://esphome.io/components/sensor/mqtt_subscribe.html#
+#
+# WARNING(JEFF): This component does nothing if you do not have
+# the "Deep Sleep" component enabled.
+#
+# The configuration defaults can be found in
+# `configs/esp8266/deep_sleep/deep_sleep.yml`.
+---
+
+# Setters
+sensor:
+    # NOTE(JEFF): Re-configure the sleep duration of the "Deep Sleep"
+    # component.
+  - platform: mqtt_subscribe
+    name: "sleep_duration"
+    id: sleep_duration
+    unit_of_measurement: "m"
+    accuracy_decimals: 0
+    topic: "esp/sleep_duration" # esp-probe-1/deep_sleep/sleep_duration
+    on_value:
+      - lambda: |-
+          id(deep_sleep_esp8266).set_sleep_duration(id(sleep_duration).state);
+          delay(100);
+    # NOTE(JEFF): Re-configure the runtime duration of the "Deep Sleep"
+    # component.
+  - platform: mqtt_subscribe
+    name: "run_duration"
+    id: run_duration
+    unit_of_measurement: "m"
+    accuracy_decimals: 0
+    topic: "esp/run_duration" # esp-probe-1/deep_sleep/run_duration
+    on_value:
+      - lambda: |-
+          id(deep_sleep_esp8266).set_run_duration(id(run_duration).state);
+          delay(100);
+

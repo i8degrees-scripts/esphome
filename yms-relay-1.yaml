@@ -26,6 +26,7 @@ packages:
   ntp_time: !include configs/time.yml
   ota: !include configs/ota.yml
   prometheus: !include configs/prometheus.yml
+  sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
   switch_restart: !include configs/switch/restart.yml
@@ -52,7 +53,6 @@ esphome:
 binary_sensor:
   - platform: gpio
     id: gpio1
-    #name: None # use the defined friendly_name
     pin: GPIO1
     filters:
       - invert:
@@ -60,7 +60,7 @@ binary_sensor:
       - delayed_off: 100ms
       - delayed_on_off: 100ms
     on_press:
-      - switch.toggle: relay
+      - switch.toggle: relay_switch
       - logger.log: "DEBUG: relay trigger"
       #- mqtt.publish_json:
         #topic: "test"
@@ -74,28 +74,27 @@ binary_sensor:
 #
 # EXAMPLES
 #
-# 1. curl -Lv --digest -u admin:19841985 -X POST "http://psu-relay-0.local/switch/relay/turn_off"
+# 1. curl -Lv --digest -u admin:19841985 -X POST "http://yms-relay-1.ha.home/switch/relay/turn_off"
+#
+
 switch:
   - platform: gpio
     pin: GPIO14
-    name: relay
-    #name: None # use the defined friendly_name
-    id: relay
+    name: relay_switch
+    id: relay_switch
     restore_mode: RESTORE_DEFAULT_OFF
     icon: !secret switch_icon
     device_class: !secret switch_device_class
-  # the indicator led in the on off button
   - platform: gpio
     pin: GPIO13
-    id: blue_led
-    name: blue_led
-    #name: None # use the defined friendly_name
+    id: status_led
+    name: status_led
     restore_mode: RESTORE_DEFAULT_ON
     # FIXME(JEFF): Refactor code; all of the new code needs to
     # be relocated to mqtt section. See "MQTT Client Component" 
     on_turn_on:
-      - switch.turn_on: blue_led
-      - logger.log: "DEBUG: blue_led is ON"
+      - switch.turn_on: status_led
+      - logger.log: "DEBUG: status_led is ON"
     on_turn_off:
-      - switch.turn_off: blue_led
-      - logger.log: "DEBUG: blue_led is OFF"
+      - switch.turn_off: status_led
+      - logger.log: "DEBUG: status_led is OFF"

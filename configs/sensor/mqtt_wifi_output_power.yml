@@ -1,0 +1,25 @@
+# Additional ESP8266 WiFi support via MQTT
+#
+# *...*
+#
+#
+# SEE ALSO
+# 1. https://esphome.io/components/sensor/mqtt_subscribe.html#
+# 1. `/config/esphome/configs/wifi.yml`
+#
+---
+
+# Setters
+sensor:
+  - platform: mqtt_subscribe
+    name: "wifi_output_power"
+    id: wifi_output_power
+    unit_of_measurement: "dBm"
+    accuracy_decimals: 0
+    # esp-probe-1/wifi_output_power
+    topic: "esp/wifi_output_power"
+    on_value:
+      - lambda: |-
+          id(wifi_conn).set_output_power(id(wifi_output_power).state);
+          delay(100);
+

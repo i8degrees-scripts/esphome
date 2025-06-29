@@ -1,4 +1,6 @@
-BSD 2-Clause License
+# LICENSE
+
+## BSD 2-Clause License
 
 Copyright (c) 2025, Jeffrey Carpenter
 

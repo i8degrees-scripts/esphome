@@ -1,0 +1,22 @@
+# Platform component
+#
+# SEE ALSO
+# 1. https://esphome.io/components/web_server
+---
+esp8266:
+  # NOTE(JEFF): This lets us quickly restore the state
+  # of the relay without the need of LAN support.
+  restore_from_flash: true
+    
+# NOTE(JEFF): Ensure that we do not needlessly use up our
+# flash write cycles; this tells ESPHome to wait a full minute
+# in between state changes before writing to memory.
+preferences:
+  flash_write_interval: 1min
+
+# NOTE(JEFF): 
+# RESTORE_DEFAULT_ON
+# RESTORE_DEFAULT_OFF
+# RESTORE_INVERTED_ON
+# RESTORE_INVERTED_OFF
+

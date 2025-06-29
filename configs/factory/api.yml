@@ -1,0 +1,11 @@
+# Enable usage of HA APIs on the device node
+#
+# SEE ALSO
+# 1. https://esphome.io/components/api.html#
+#
+---
+
+api:
+  encryption:
+    key: !secret factory_api_password
+

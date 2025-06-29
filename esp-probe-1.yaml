@@ -1,0 +1,58 @@
+# esp-probe-1
+#
+# http://esp-probe1.home
+# http://esp-probe-1.local
+#
+# TODO(JEFF): Finish enabling deep sleep; we must add a jumper pin between D0 (GPIO16) and RST
+# in order to allow the device to awaken. Then, we must finalize our decision on the wake cycle 
+# duration -- 60s is what I have in mind. Perhaps we could further minimize energy by only
+# sending out upon a value that differs by more than 1.0. Lastly, the resolution of both values
+# need only to be unsigned integers with no decimals whatsoever. Ultimately, I will not be satisfied
+# until we can accomplish one of the two following:
+#
+# a) running this probe on no more than a couple double AA batteries (~3.2V) or perhaps 3V lithium coin cell; best case
+# b) running this probe on no more than 1 16850 lithium-ion battery cell (~3.7V) or perhaps even a ~75W square cell type.
+---
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "Loj3XMT69cn+PVuuGEiWWU5c5LZw3a148rGgsJYuUWg="
+
+packages:
+  climate_dht22: !include configs/sensor/climate_dht22.yml
+  esp12_gpios: !include configs/esp8266/esp12/gpios.yml
+  esp12_led_blue: !include configs/esp8266/esp12/led_blue.yml
+  esp8266_deep_sleep: !include configs/esp8266/deep_sleep.yml
+  esp8266_platform: !include configs/esp8266/esp12/platform.yml
+  esp8266_project: !include configs/esp8266/project.yml
+  esp8266_storage: !include configs/esp8266/flash_storage.yml
+  esphome_ota: !include configs/ota.yml
+  mdns_host: !include configs/mdns.yml
+  mqtt_client: !include configs/mqtt.yml
+  ntp_time: !include configs/time.yml
+  sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
+  switch_factory_reset: !include configs/switch/factory_reset.yml
+  switch_restart: !include configs/switch/restart.yml
+  webmetrics_prometheus: !include configs/prometheus.yml
+  webserver: !include configs/webserver.yml
+  wifi: !include configs/wifi.yml
+
+# NOTE(JEFF): This will include the logger component
+<<: !include configs/development.yml
+#<<: !include configs/production.yml
+
+# IMPORTANT(JEFF): We are overriding one parameter from the wifi 
+# package because we anticipate using this device with the power 
+# source being a battery (lithium-ion) instead of 120V AC mains or 5V USB.
+wifi:
+  power_save_mode: HIGH
+  output_power: 20  
+  
+# 1. https://esphome.io/components/deep_sleep#
+
+esphome:
+  name: esp-probe-1
+  friendly_name: esp-probe-dht22
+  area: Bedroom
+

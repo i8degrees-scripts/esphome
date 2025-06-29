@@ -1,0 +1,74 @@
+# Sonoff S31 Lite Smart WiFi Plug
+#
+# 1. https://devices.esphome.io/devices/Sonoff-S31-lite
+#
+---
+
+# Basic Config
+esphome:
+  name: "Sonoff S31 Lite"
+  friendly_name: "SONOFF S31 Lite"
+
+esp8266:
+  board: esp01_1m
+  framework:
+    version: recommended
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret api2_key
+
+ota:
+  password: ""
+
+wifi:
+  ssid: !secret wifi_ssid2
+  password: !secret wifi_ssid2_password
+
+logger:
+  baud_rate: 0 # (UART logging interferes with cse7766)
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Sonoff S31-lite  Fallback Hotspot"
+    password: ""
+
+captive_portal:
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Sonoff S31-lite Button"
+    on_press:
+      - switch.toggle: relay
+  - platform: status
+    name: "Sonoff S31-lite Status"
+
+sensor:
+  - platform: wifi_signal
+    name: "Sonoff S31-lite WiFi Signal"
+    update_interval: 60s
+
+switch:
+  - platform: gpio
+    name: "Sonoff S31-lite Relay"
+    pin: GPIO12
+    id: relay
+    restore_mode: ALWAYS_ON
+
+time:
+  - platform: sntp
+    id: my_time
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: True

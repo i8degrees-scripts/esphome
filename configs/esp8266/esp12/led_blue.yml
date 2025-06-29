@@ -1,0 +1,14 @@
+#
+#
+#
+#
+---
+
+# Toggle switch for status LED
+switch:
+  - platform: gpio
+    id: blue_led
+    name: status_led
+    pin: GPIO2 # LED_BUILTIN  
+    inverted: True
+    restore_mode: RESTORE_DEFAULT_ON

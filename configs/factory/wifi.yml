@@ -1,0 +1,18 @@
+# WiFi component factory defaults
+#
+# https://esphome.io/components/wifi.html
+---
+
+wifi:
+  power_save_mode: light
+  domain: .ha.home
+  # WARNING(JEFF): This value is likely to require further 
+  # tweaks before we find the best default value.
+  output_power: 15.00
+  # Enable fallback hotspot in case of emergency
+  ap:
+    ssid: "${lower_devicename}_Hotspot"
+    password: !secret factory_ap_password
+
+captive_portal:
+

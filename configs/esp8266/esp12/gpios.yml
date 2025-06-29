@@ -1,0 +1,14 @@
+#
+#
+#
+#
+---
+
+# Assignment of a specified GPIO to be used as a simple
+# status LED where a pulled high configuration turns the 
+# component on (BLUE) and a pulled low configuration turns
+# the LED off. 
+#status_led:
+  #pin:
+    #number: GPIO2 # LED_BUILTIN
+    #inverted: True

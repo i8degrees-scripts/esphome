@@ -1,0 +1,18 @@
+# Generic development build template
+#
+# This template will try and ensure that configuration
+# parameters are setup to allow logging and other
+# typical features that are desirable for a developer
+# working on a project.
+#
+# SEE ALSO
+# 1. esphome/configs/production.yml 
+# 2. https://esphome.io/components/logger.html
+---
+
+logger:
+  level: DEBUG
+  logs:
+    mqtt.component: DEBUG
+    mqtt.client: DEBUG
+    #sensor: DEBUG

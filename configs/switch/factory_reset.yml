@@ -1,0 +1,13 @@
+# esphome/configs/switch/factory_reset.yml:jeff
+#
+# Factory reset switch
+#
+# SEE ALSO
+# 1. https://esphome.io/components/switch/factory_reset.html
+---
+
+switch:
+  - platform: factory_reset
+    name: Restart with Factory Default Settings
+    disabled_by_default: true
+

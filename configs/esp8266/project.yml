@@ -1,0 +1,15 @@
+# Generic ESP8266 Project Template
+#
+# SEE ALSO
+# 1. https://esphome.io/components/esphome#
+#
+---
+
+esphome:
+  # TODO(JEFF): This is yet to be determined.
+  #min_version: 2023
+  comment: Made with love by Jeffrey Carpenter <jeff+esp8266@479831.xyz>
+  project:
+    name: i8degrees.esp8266
+    version: 1.0.0
+

@@ -1,0 +1,11 @@
+# UART configuration template
+#
+# SEE ALSO
+# 1. https://esphome.io/components/uart.html
+---
+
+# (UART logging interferes with cse7766)
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+  parity: EVEN

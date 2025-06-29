@@ -1,0 +1,17 @@
+# Logging component defaults for Sonoff S31 Plugs
+#
+# SEE ALSO
+#
+# 1. https://esphome.io/components/logger.html
+---
+
+logger:
+  #level: ${logger_level}
+  # We must not use the serial interface for logging because our energy monitoring
+  # circuit -- CSE7766 -- uses this upon power up.
+  baud_rate: 0
+  logs:
+    # (Overide any global setting, to VERBOSE will spamming the cse7766 sensors)
+    sensor: INFO
+    #mqtt.component: ${logger_mqtt_component}
+    #mqtt.client: ${logger_mqtt_client}

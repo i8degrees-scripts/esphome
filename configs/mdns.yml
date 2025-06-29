@@ -1,0 +1,18 @@
+# mDNS Component
+#
+# Default configuration template
+# 
+# SEE ALSO
+# 1. https://esphome.io/components/mdns.html#
+#
+---
+
+mdns:
+  disabled: false
+  #services:
+    #- service: "_custom_service"
+      #protocol: "_tcp"
+      #port: 8080
+      #txt:
+        #txt_key_1: txt_value_1
+

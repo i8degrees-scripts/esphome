@@ -1,0 +1,10 @@
+# Generic ESP8266 NodeMCUv1 Platform for ESPHome
+#
+# SEE ALSO
+# 1.
+#
+---
+
+esp8266:
+  board: nodemcuv1
+

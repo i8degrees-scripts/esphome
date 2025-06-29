@@ -1,0 +1,29 @@
+# WiFi defaults
+#
+# https://esphome.io/components/wifi.html
+---
+
+wifi:
+  power_save_mode: !secret wifi_powersave
+  # ssid1 = NETGEAR11
+  #domain: !secret wifi_ssid1_domain
+  #ssid: !secret wifi_ssid1
+  #password: !secret wifi_ssid1_password
+  domain: !secret wifi_domain
+  networks:
+    # NETGEAR11
+    - ssid: !secret wifi_ssid1
+      password: !secret wifi_ssid1_password
+      hidden: !secret wifi_ssid1_hidden
+      manual_ip:
+        static_ip: !secret wifi_ssid1_ipaddr
+        gateway: !secret wifi_ssid1_gateway
+        subnet: !secret wifi_ssid1_subnet
+        dns1: !secret wifi_ssid1_dns1
+        dns2: !secret wifi_ssid1_dns2
+  # Enable fallback hotspot in case of emergency
+  ap:
+    ssid: "${lower_devicename}_Hotspot"
+    password: "UOR6GLP0CBdi"
+
+captive_portal:

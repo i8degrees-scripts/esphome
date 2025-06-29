@@ -1,0 +1,112 @@
+# Sonoff S31 Smart WiFi Plug
+#
+# 1. https://devices.esphome.io/devices/Sonoff-S31
+#
+---
+
+# Enable usage with Home Assistant APIs
+#
+# NOTE(JEFF): This has the side effect of restarting this 
+# device once every ~30 minutes if it is unable to contact
+# the HA server; this is by design.
+api:
+  encryption:
+    key: !secret api3_key
+
+packages:
+  esp8266_platform: !include configs/esp8266/esp12/platform.yml
+  esp8266_storage: !include configs/esp8266/flash_storage.yml
+  logger_sonoff: !include configs/sonoff-s31/logger.yml
+  mdns_host: !include configs/mdns.yml
+  mqtt_client: !include configs/mqtt.yml
+  ntp_time: !include configs/time.yml
+  #ota: !include configs/ota.yml
+  prometheus: !include configs/prometheus.yml
+  sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
+  sonoff_gpios: !include configs/sonoff-s31/gpios.yml
+  sonoff_project: !include configs/sonoff-s31/project.yml
+  sonoff_uart: !include configs/sonoff-s31/uart.yml
+  switch_factory_reset: !include configs/switch/factory_reset.yml
+  switch_restart: !include configs/switch/restart.yml
+  webserver: !include configs/webserver.yml
+  wifi: !include configs/wifi.yml
+  wifi_signal: !include configs/sensor/wifi_signal.yml
+
+<<: !include configs/development.yml
+#<<: !include configs/production.yml
+
+ota:
+  - platform: esphome
+    #password: !secret ota_password
+    password: "abffc54758f6383fc4c48dfa592bbe41"
+
+esphome:
+  # IMPORTANT(JEFF): Match the filename 1:1 without file extension, including the prefixed `.`
+  # NOTE(JEFF): The name becomes the hostname that is given to this device. It will be advertised
+  # via mDNS as {lower_devicename}.local and will also be assigned the assigned wifi domain 
+  # value (.lan).
+  name: "sonoff-s31-3"
+  friendly_name: "(TV) Fan #2"
+  area: Bedroom
+
+esp8266:
+  early_pin_init: false
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button"
+    on_press:
+      - switch.toggle: relay
+  - platform: status
+    name: "Status"
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "Current"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+    voltage:
+      name: "Voltage"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+    power:
+      name: "Power"
+      accuracy_decimals: 2
+      id: my_power
+      filters:
+        - throttle_average: 60s
+    energy:
+      name: "Energy"
+      accuracy_decimals: 2
+      filters:
+        - throttle: 60s
+    apparent_power: #(only available with version 2024.3.0 or greater)
+      name: "Apparent Power"
+      filters:
+        - throttle_average: 60s
+    power_factor: #(only available with version 2024.3.0 or greater)
+      name: "Power Factor"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+
+  - platform: total_daily_energy #(Optional, not specific to cse7766)
+    name: "Daily Energy"
+    power_id: my_power
+    accuracy_decimals: 2
+
+switch:
+  - platform: gpio
+    name: "Relay"
+    pin: GPIO12
+    id: relay
+    restore_mode: RESTORE_DEFAULT_ON
+    #restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
+

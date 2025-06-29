@@ -1,0 +1,9 @@
+# OTA defaults
+#
+# OTA (Over The Air) updates without physical console
+---
+
+ota:
+  - platform: esphome
+    password: !secret factory_ota_password
+

@@ -1,0 +1,62 @@
+# Factory defaults template
+#
+# This device node should always be kept separated from the
+# rest of our ESPHome configuration files -- it represents 
+# a starting point (or template) for all of our devices and
+# should be modified to not use any of the factory-specific
+# settings and passphrases upon the first success of having
+# uploaded this configuration to said device.
+#
+# SEE ALSO
+# 1.
+#
+---
+
+packages:
+  esp8266_platform: !include configs/esp8266/esp01/platform.yml
+  #esp8266_platform: !include configs/esp8266/esp12/platform.yml
+  #esp8266_storage: !include configs/esp8266/flash_storage.yml
+  #factory_reset: !include configs/switch/factory_reset.yml
+  # NOTE(JEFF): Enable access to the device via 
+  # esphome-factory-1.local address in addition to.
+  mdns: !include configs/mdns.yml
+  #mqtt: !include configs/mqtt.yml
+  ota: !include configs/factory/ota.yml
+  project: !include configs/esp8266/project.yml
+  #prometheus: !include configs/prometheus.yml
+  restart: !include configs/switch/restart.yml
+  #time: !include configs/time.yml
+  #webserver: !include configs/webserver.yml
+  #wifi: !include configs/wifi.yml
+  # wifi component with our pre-defined networks to attempt
+  # connecting to; this also includes the ap and captive_portal
+  # components for when the device is unable to connect in 
+  # order to allow the end-user to re-authenticate against
+  # one of their networks not included in the component 
+  # defaults.
+  wifi: !include configs/factory/wifi.yml
+  wifi_signal: !include configs/sensor/wifi_signal.yml
+  api: !include configs/factory/api.yml
+
+# NOTE(JEFF): This includes the component logger
+<<: !include configs/development.yml
+#<<: !include configs/production.yml
+
+esphome:
+  # NOTE(JEFF): The name of the device will become the 
+  # assigned non-fully-qualified hostname -- this may 
+  # influences how you setup your DNS in relation to 
+  # this device. This includes the mdns hostname if the
+  # `mdns` component is built-in. 
+  # If you are using this device with HA, the name attribute
+  # is also the value used to create the entity_name for use
+  # within HA. 
+  name: "esphome-factory-1"
+  # NOTE(JEFF): This is the name that HA uses for rendering
+  # inside of its UI.
+  friendly_name: "esphome-factory-1"
+  # NOTE(JEFF): This is a convenience attribute that can be
+  # used to force the device to use a particular address for
+  # the sake of routing on your network. This does not rely
+  # on DHCP to resolve its address and other bits.
+  #use_address: <IP OR HOSTNAME>

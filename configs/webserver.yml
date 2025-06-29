@@ -1,0 +1,31 @@
+# [Webserver component][1] defaults
+#
+# SEE ALSO
+# 1. https://esphome.io/components/web_server
+# 2. https://esphome.io/components/web_server#entity-grouping
+---
+
+web_server:
+  port: !secret webserver_http_port
+  log: true
+  # NOTE(JEFF): Version 3 of this component allows for custom
+  # sorting of [entities based on group IDs][2].
+  version: 3
+  # IMPORTANT(JEFF): Ensure that any page served will use no 
+  # dependencies from the wider net; this is required for 100% 
+  # offline usage and should probably never be touched.
+  local: true
+  # IMPORTANT(JEFF): This controls whether or not this server will
+  # allow unauthenticated API calls to its address, in addition to
+  # whether or not the page will be served without first 
+  # authenticating using HTTP digest
+  #auth:
+    #username: !secret webserver_username
+    #password: !secret webserver_password
+  # IMPORTANT(JEFF): This should almost never be touched! Upon 
+  # the loss of this feature, you will no longer be able to 
+  # update its firmware from ESPHome. You will likely have to
+  # have physical access to the hardware as you will have to re-
+  # connect the serial comms before you can modify the firmware
+  # further.
+  ota: true

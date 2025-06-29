@@ -1,0 +1,118 @@
+# Sonoff S31 Smart WiFi Plug
+#
+# *...*
+#
+# 1. curl -X POST http://sonoff-s31-8.ha.home/switch/relay/turn_on
+# 2. curl -X POST http://sonoff-s31-8.ha.home/switch/relay/turn_off
+#
+# SEE ALSO
+# 1. https://devices.esphome.io/devices/Sonoff-S31
+#
+---
+
+# Enable usage with Home Assistant APIs
+#
+# NOTE(JEFF): This has the side effect of restarting this 
+# device once every ~30 minutes if it is unable to contact
+# the HA server; this is by design.
+api:
+  encryption:
+    key: !secret api8_key
+
+ota:
+  - platform: esphome
+    #password: !secret ota_password
+    password: "8c8063ce24558099b72b12226f81470c"
+
+packages:
+  #sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
+  esp8266_platform: !include configs/esp8266/esp12/platform.yml
+  esp8266_storage: !include configs/esp8266/flash_storage.yml
+  logger_sonoff: !include configs/sonoff-s31/logger.yml
+  mdns_host: !include configs/mdns.yml
+  mqtt_client: !include configs/mqtt.yml
+  ntp_time: !include configs/time.yml
+  #ota: !include configs/ota.yml
+  prometheus: !include configs/prometheus.yml
+  sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
+  sonoff_gpios: !include configs/sonoff-s31/gpios.yml
+  sonoff_project: !include configs/sonoff-s31/project.yml
+  sonoff_uart: !include configs/sonoff-s31/uart.yml
+  switch_factory_reset: !include configs/switch/factory_reset.yml
+  switch_restart: !include configs/switch/restart.yml
+  webserver: !include configs/webserver.yml
+  wifi: !include configs/wifi.yml
+
+<<: !include configs/development.yml
+#<<: !include configs/production.yml
+
+wifi:
+  output_power: 15.00
+   
+# Basic Config
+esphome:
+  name: "sonoff-s31-8"
+  friendly_name: "LG TV"
+  area: Living Room
+
+esp8266:
+  early_pin_init: false
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button"
+    on_press:
+      - switch.toggle: relay
+  - platform: status
+    name: "Status"
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "Current"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+    voltage:
+      name: "Voltage"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+    power:
+      name: "Power"
+      accuracy_decimals: 2
+      id: my_power
+      filters:
+        - throttle_average: 60s
+    energy:
+      name: "Energy"
+      accuracy_decimals: 2
+      filters:
+        - throttle: 60s
+    apparent_power: #(only available with version 2024.3.0 or greater)
+      name: "Apparent Power"
+      filters:
+        - throttle_average: 60s
+    power_factor: #(only available with version 2024.3.0 or greater)
+      name: "Power Factor"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+
+  - platform: total_daily_energy #(Optional, not specific to cse7766)
+    name: "Daily Energy"
+    power_id: my_power
+    accuracy_decimals: 2
+
+switch:
+  - platform: gpio
+    name: "Relay"
+    pin: GPIO12
+    id: relay
+    # restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
+    restore_mode: RESTORE_DEFAULT_ON
+

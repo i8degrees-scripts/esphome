@@ -1,0 +1,25 @@
+# Temperature & Relative Humidity sensor
+#
+# SEE ALSO
+# 1. 
+#
+---
+
+sensor:
+  - platform: dht
+    model: DHT11
+    pin: 4 # D4; GPIO2 (TXD1)
+    temperature:
+      name: "Temperature"
+      # NOTE(JEFF): This is preferential and does not
+      # necessarily represent the resolution of the
+      # input.
+      accuracy_decimals: 1.00
+      #update_interval: 5m
+    humidity:
+      name: "Relative Humidity"
+      # NOTE(JEFF): This is preferential and does not
+      # necessarily represent the resolution of the
+      # input.
+      accuracy_decimals: 1.00
+      #update_interval: 5m

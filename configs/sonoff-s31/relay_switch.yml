@@ -1,0 +1,18 @@
+# Sonoff S31 Relay Switch Template
+#
+# *...*
+#
+# SEE ALSO
+# 1.
+#
+---
+
+switch:
+  - platform: gpio
+    name: "Relay"
+    pin: GPIO12
+    id: relay
+    restore_mode: RESTORE_DEFAULT_ON
+    # IMPORTANT(JEFF): Powering the relay may cause damage or instability when the programmer is supplying Vcc.
+    #restore_mode: ALWAYS_OFF
+

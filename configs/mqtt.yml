@@ -1,0 +1,13 @@
+# MQTT defaults
+#
+# 1. https://esphome.io/components/mqtt#mqtt-publish-json-action
+---
+
+mqtt:
+  id: "mqtt_client"
+  #client_id: "mqtt-user-ha1"
+  discovery: !secret mqtt_discovery_enable
+  broker: !secret mqtt0_broker
+  username: !secret mqtt0_username
+  password: !secret mqtt0_password
+  #discovery_unique_id_generator: "mac"

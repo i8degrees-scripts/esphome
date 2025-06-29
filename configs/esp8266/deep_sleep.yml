@@ -1,0 +1,12 @@
+# Generic ESP8266 Deep Sleep Template
+#
+# ...
+#
+# SEE ALSO
+# 1. https://esphome.io/components/deep_sleep#
+# 2.
+# 3.
+# 4.
+---
+deep_sleep:
+  id: power_save

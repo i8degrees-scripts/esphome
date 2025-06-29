@@ -1,0 +1,10 @@
+# esphome/configs/switch/restart.yml:jeff
+#
+# Restart Switch component defaults
+#
+# SEE ALSO
+# 1. https://esphome.io/components/switch/restart
+---
+switch:
+  - platform: restart
+    name: "Warm Reboot"

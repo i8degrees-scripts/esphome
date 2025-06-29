@@ -1,0 +1,17 @@
+# Sonoff S31 Project Template
+#
+# SEE ALSO
+# 1. https://esphome.io/components/esphome#
+#
+---
+
+esphome:
+  # NOTE(JEFF): This particular version is chosen in 
+  # order to support "Apparent Power" and "Power Factor"
+  # configuration using the CSE7766 platform feature of
+  # our Sonoff S31 smart plugs.
+  min_version: 2024.3.0
+  comment: Made with love by Jeffrey Carpenter <jeff+sonoff-s31-plugs@479831.xyz>
+  project:
+    name: i8degrees.esp-sonoff-s31-plugs
+    version: 1.0.0

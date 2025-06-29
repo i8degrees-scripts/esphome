@@ -1,0 +1,9 @@
+# Generic ESP8266/esp01 Platform for ESPHome 
+#
+# SEE ALSO
+# 1.
+#
+---
+esp8266:
+  board: esp01_1m
+

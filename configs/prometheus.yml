@@ -1,0 +1,14 @@
+# Prometheus (metrics) defaults
+#
+# TODO(JEFF): Implement debug & release configuration
+# states so that we can potentially disable logging
+# and such under a release build type.
+---
+
+# NOTE(JEFF): This dependency is nearly free if one 
+# already has the webserver component integrated, otherwise
+# do note that this will increase the flash size 
+# significantly.
+#
+# Activate "http://device.local/metrics" endpoint
+prometheus:

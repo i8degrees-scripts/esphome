@@ -1,0 +1,17 @@
+# Generic production release template
+#
+# This template will potentially modify existing
+# configuration parameters, such as turning off
+# logging and other conveniences made by use of
+# the development template.
+#
+# SEE ALSO
+# 1. esphome/configs/development.yml
+# 1. https://esphome.io/components/logger.html
+---
+
+logger:
+  level: INFO
+  logs:
+    mqtt.component: WARN
+    mqtt.client: WARN

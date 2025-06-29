@@ -1,0 +1,12 @@
+# esphome/configs/sensor/wifi_signal.yml:jeff
+#
+# Generic sensor for provisioning wifi signal
+#
+# SEE ALSO
+# 1. https://esphome.io/components/sensor/index.html#
+---
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal"
+    update_interval: 60s
+

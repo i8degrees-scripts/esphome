@@ -1,0 +1,190 @@
+# TODO(JEFF): Rename this component to psu-relay-0.yaml
+---
+esp8266:
+  # platform: ESP8266
+  board: esp01_1m
+esphome:
+  area: "Bedroom"
+  name: "psu-relay-0"
+  friendly_name: "PSU RELAY-0"
+# Enable logging
+# 1. https://esphome.io/components/logger.html
+logger:
+  level: INFO
+  #level: VERBOSE
+  logs:
+    mqtt.component: INFO
+    #mqtt.component: VERBOSE
+    mqtt.client: INFO
+    #mqtt.client: VERBOSE
+# https://esphome.io/components/wifi.html
+wifi:
+  power_save_mode: !secret wifi_powersave
+  #use_address: "psu-relay-0.lan"
+  #use_address: "psu-relay-0.home"
+  domain: !secret wifi_domain
+  networks:
+    # syn_2g
+    - ssid: !secret wifi_ssid0
+      password: !secret wifi_ssid0_password
+      hidden: !secret wifi_ssid0_hidden
+      manual_ip:
+        static_ip: !secret wifi_ssid0_ipaddr
+        gateway: !secret wifi_ssid0_gateway
+        subnet: !secret wifi_ssid0_subnet
+        dns1: !secret wifi_ssid0_dns1
+        dns2: !secret wifi_ssid0_dns2
+    # NETGEAR11
+    - ssid: !secret wifi_ssid1
+      password: !secret wifi_ssid1_password
+      hidden: !secret wifi_ssid1_hidden
+    - ssid: !secret wifi_ssid2
+      password: !secret wifi_ssid2_password
+      hidden: !secret wifi_ssid2_hidden
+      manual_ip:
+        static_ip: !secret wifi_ssid2_ipaddr
+        gateway: !secret wifi_ssid2_gateway
+        subnet: !secret wifi_ssid2_subnet
+        dns1: !secret wifi_ssid2_dns1
+        dns2: !secret wifi_ssid2_dns2
+  # Enable fallback failure hotspot that is presented as a Captive Portal.
+  # 1. https://esphome.io/components/captive_portal
+  ap:
+    ssid: "Emergency AP 1"
+    password: !secret ap_fallback_password
+captive_portal:
+
+# NTP
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: !secret time_tz
+    servers:
+      - "192.168.12.138" # pve3.home
+      - "time.mynaughty.party"
+      - "time.cloudflare.com"
+    on_time_sync:
+      then:
+        - logger.log: "The system clock has been synchronized."
+    on_time:
+      - seconds: 0
+        minutes: /60
+        then:
+          - logger.log: "One hour has elapsed."
+          #- switch.turn_off:  relay
+
+# TODO(jeff): SSL certificates
+# 1. https://esphome.io/components/mqtt#ssl-fingerprints
+web_server:
+  # HTML pages are served with local URLs; no dependency on Internet
+  local: true
+  port: !secret webserver_http_port
+  #auth:
+    #username: !secret webserver_username
+    #password: !secret webserver_password
+
+# Activate "/metrics" endpoint
+prometheus:
+
+# Enable Home Assistant API for use with ESPHome integration
+#
+# WARNING(jeff): This configuration cannot be used with the MQTT component. You must
+# choose either the API component OR the MQTT component. The total firmware file size
+# exceeds the maximum storage space available.
+#
+# 1. https://esphome.io/components/api.html
+#api:
+#encryption:
+#key: !secret api1_key
+
+# 1. https://esphome.io/components/mqtt#mqtt-publish-json-action
+mqtt:
+  id: "mqtt_client"
+  client_id: "mqtt-user-ha1"
+  discovery: !secret mqtt_discovery_enable
+  broker: !secret mqtt0_broker
+  username: !secret mqtt0_username
+  password: !secret mqtt0_password
+  #discovery_unique_id_generator: "mac"
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+# Diagnostics sensor
+#
+# IMPORTANT(jeff): The name of this sensor will appear on
+# Home Assistant visually as a text view with diagnostics
+# info. The name tag here shall be reflected there.
+sensor:
+  - platform: wifi_signal
+    name: wifi_signal
+    #name: None # use the defined friendly_name
+    update_interval: !secret sensor_wifi_signal_interval
+
+# the on off button
+# IMPORTANT(jeff): The name of this sensor will appear on
+# Home Assitant visually as an icon with ON/OFF toggle.
+# The name tag below shall be reflected there.
+binary_sensor:
+  - platform: gpio
+    id: gpio1
+    #name: None # use the defined friendly_name
+    pin: GPIO1
+    filters:
+      - invert:
+      - delayed_on: 100ms
+      - delayed_off: 100ms
+      - delayed_on_off: 100ms
+    on_press:
+      - switch.toggle: relay
+      - logger.log: "DEBUG: relay trigger"
+      #- mqtt.publish_json:
+        #topic: "test"
+        #payload: |-
+          #root["state"]= "ping"
+
+# the relay that controls the output power
+# 
+# 1. https://esphome.io/components/switch/index.html
+# 2. https://esphome.io/web-api/#switch
+#
+# EXAMPLES
+#
+# 1. curl -Lv --digest -u admin:19841985 -X POST "http://psu-relay-0.local/switch/relay/turn_off"
+switch:
+  - platform: gpio
+    pin: GPIO14
+    name: relay
+    #name: None # use the defined friendly_name
+    id: relay
+    restore_mode: RESTORE_DEFAULT_OFF
+    icon: !secret switch_icon
+    device_class: !secret switch_device_class
+  # the indicator led in the on off button
+  - platform: gpio
+    pin: GPIO13
+    id: blue_led
+    name: blue_led
+    #name: None # use the defined friendly_name
+    restore_mode: !secret switch_led_restore_mode
+    # FIXME(JEFF): Refactor code; all of the new code needs to
+    # be relocated to mqtt section. See "MQTT Client Component" 
+    on_turn_on:
+      - switch.turn_on: blue_led
+      - logger.log: "DEBUG: blue_led is ON"
+    on_turn_off:
+      - switch.turn_off: blue_led
+      - logger.log: "DEBUG: blue_led is OFF"
+
+# Restart this instance from Home Assistant
+# 1. https://esphome.io/components/button/restart
+# 2. https://esphome.io/components/switch/restart
+button:
+  - platform: restart
+    name: "Restart"
+
+# TODO(jeff): https://esphome.io/components/switch/factory_reset
+#button:
+  #- platform: reset
+    #name: "Factory Reset"

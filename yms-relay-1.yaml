@@ -32,6 +32,7 @@ packages:
   switch_restart: !include configs/switch/restart.yml
   web_server: !include configs/webserver.yml
   wifi: !include configs/wifi.yml
+  sensor_uptime: !include configs/sensor/uptime.yml
 
 #<<: !include configs/development.yml
 <<: !include configs/production.yml

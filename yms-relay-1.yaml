@@ -26,7 +26,7 @@ packages:
   esp8266_project: !include configs/esp8266/project.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
   mdns_host: !include configs/mdns.yml
-  mqtt_client: !include configs/mqtt.yml
+  #mqtt_client: !include configs/mqtt.yml
   ntp_time: !include configs/time.yml
   ota: !include configs/ota.yml
   prometheus: !include configs/prometheus.yml

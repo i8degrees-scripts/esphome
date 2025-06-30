@@ -8,6 +8,10 @@
 #
 ---
 
+substitutions:
+  devicename: "sonoff-s31-1"
+  lower_devicename: "sonoff-s31-1"
+
 # Enable usage with Home Assistant APIs
 #
 # NOTE(JEFF): This has the side effect of restarting this 
@@ -28,6 +32,7 @@ packages:
   ntp_time: !include configs/time.yml
   ota: !include configs/ota.yml
   prometheus: !include configs/prometheus.yml
+  sensor_uptime: !include configs/sensor/uptime.yml
   sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
@@ -35,10 +40,7 @@ packages:
   sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   sonoff_uart: !include configs/sonoff-s31/uart.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
-  #switch_restart: !include configs/switch/restart.yml
-  switch_confirm_restart: !include configs/switch/confirm_restart.yml
-  button_confirm_restart: !include configs/button/confirm_restart.yml
-  sensor_uptime: !include configs/sensor/uptime.yml
+  switch_restart: !include configs/switch/restart.yml
   webserver: !include configs/webserver.yml
   wifi: !include configs/wifi.yml
 
@@ -80,7 +82,7 @@ sensor:
     power:
       name: "Power"
       accuracy_decimals: 2
-      id: my_power
+      id: power
       filters:
         - throttle_average: 60s
     energy:
@@ -100,6 +102,6 @@ sensor:
 
   - platform: total_daily_energy #(Optional, not specific to cse7766)
     name: "Daily Energy"
-    power_id: my_power
+    power_id: power
     accuracy_decimals: 2
 

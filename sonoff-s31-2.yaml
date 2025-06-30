@@ -7,6 +7,10 @@
 # curl -X POST http://sonoff-s31-2.local/switch/relay/turn_off
 ---
 
+substitutions:
+  devicename: "sonoff-s31-2"
+  lower_devicename: "sonoff-s31-2"
+
 # Enable usage with Home Assistant APIs
 #
 # NOTE(JEFF): This has the side effect of restarting this 
@@ -16,8 +20,12 @@ api:
   encryption:
     key: !secret api2_key
 
+<<: !include configs/globals.yml
+
 packages:
   #sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
+  #switch_restart: !include configs/switch/restart.yml
+  button_confirm_restart: !include configs/button/confirm_restart.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
   logger_sonoff: !include configs/sonoff-s31/logger.yml
@@ -26,12 +34,13 @@ packages:
   ntp_time: !include configs/time.yml
   ota: !include configs/ota.yml
   prometheus: !include configs/prometheus.yml
+  sensor_uptime: !include configs/sensor/uptime.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
   sonoff_project: !include configs/sonoff-s31/project.yml
-  switch_factory_reset: !include configs/switch/factory_reset.yml
-  switch_restart: !include configs/switch/restart.yml
   sonoff_uart: !include configs/sonoff-s31/uart.yml
+  switch_confirm_restart: !include configs/switch/confirm_restart.yml
+  switch_factory_reset: !include configs/switch/factory_reset.yml
   webserver: !include configs/webserver.yml
   wifi: !include configs/wifi.yml
 
@@ -39,11 +48,7 @@ packages:
 #<<: !include configs/production.yml
 
 esphome:
-  # IMPORTANT(JEFF): Match the filename 1:1 without file extension, including the prefixed `.`
-  # NOTE(JEFF): The name becomes the hostname that is given to this device. It will be advertised
-  # via mDNS as {lower_devicename}.local and will also be assigned the assigned wifi domain 
-  # value (.lan).
-  name: "sonoff-s31-2"
+  name: ${devicename}
   friendly_name: "OctoPrint Relay #1"
   area: Bedroom
 
@@ -58,7 +63,7 @@ binary_sensor:
       inverted: True
     name: "Button"
     on_press:
-      - switch.toggle: relay
+      - switch.toggle: relay_switch
   - platform: status
     name: "Status"
 
@@ -77,7 +82,7 @@ sensor:
     power:
       name: "Power"
       accuracy_decimals: 2
-      id: my_power
+      id: power
       filters:
         - throttle_average: 60s
     energy:
@@ -97,7 +102,7 @@ sensor:
 
   - platform: total_daily_energy #(Optional, not specific to cse7766)
     name: "Daily Energy"
-    power_id: my_power
+    power_id: power
     accuracy_decimals: 2
 
 #switch: !include { file: configs/sonoff-s31/relay_switch.yml, 
@@ -115,7 +120,7 @@ switch:
   - platform: gpio
     name: "Relay"
     pin: GPIO12
-    id: relay
+    id: relay_switch
     restore_mode: RESTORE_DEFAULT_OFF
     #restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
 

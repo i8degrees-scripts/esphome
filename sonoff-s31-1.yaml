@@ -17,6 +17,8 @@ api:
   encryption:
     key: !secret api1_key
 
+<<: !include configs/globals.yml
+
 packages:
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
@@ -33,7 +35,10 @@ packages:
   sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   sonoff_uart: !include configs/sonoff-s31/uart.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
-  switch_restart: !include configs/switch/restart.yml
+  #switch_restart: !include configs/switch/restart.yml
+  switch_confirm_restart: !include configs/switch/confirm_restart.yml
+  button_confirm_restart: !include configs/button/confirm_restart.yml
+  sensor_uptime: !include configs/sensor/uptime.yml
   webserver: !include configs/webserver.yml
   wifi: !include configs/wifi.yml
 
@@ -56,7 +61,7 @@ binary_sensor:
       inverted: True
     name: "Button"
     on_press:
-      - switch.toggle: relay
+      - switch.toggle: relay_switch
   - platform: status
     name: "Status"
 

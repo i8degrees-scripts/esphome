@@ -18,18 +18,23 @@
 #
 ---
 
+<<: !include configs/globals.yml
+
+substitutions:
+  devicename: "esp-probe-1"
+  lower_devicename: "esp-probe-1"
+
 # Enable Home Assistant API
 api:
   encryption:
     key: "Loj3XMT69cn+PVuuGEiWWU5c5LZw3a148rGgsJYuUWg="
 
 esphome:
-  name: esp-probe-1
+  name: ${devicename}
   #friendly_name: esp-climate-1
   area: Bedroom
 
 packages:
-  #esp8266_platform: !include configs/esp8266/esp12/platform.yml
   #esp12_gpios: !include configs/esp8266/esp12/gpios.yml
   esp12_led_blue: !include configs/esp8266/esp12/led_blue.yml
   esp8266_deep_sleep: !include configs/esp8266/deep_sleep/deep_sleep.yml
@@ -47,6 +52,7 @@ packages:
   sensor_mqtt_restart: !include configs/switch/mqtt_restart.yml
   sensor_mqtt_wifi_output_power: !include configs/sensor/mqtt_wifi_output_power.yml
   sensor_sleep_time: !include configs/esp8266/deep_sleep/sensor/sleep_time.yml
+  sensor_uptime: !include configs/sensor/uptime.yml
   sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml

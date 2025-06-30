@@ -64,6 +64,12 @@ packages:
 esphome:
   name: ${devicename}
   # TODO(JEFF): Remove `friendly_name`..?
+
+#<<: !include configs/development.yml
+<<: !include configs/production.yml
+  
+esphome:
+  name: ${devicename}
   friendly_name: "pve1-psu-relay"
   area: "Bedroom"
 

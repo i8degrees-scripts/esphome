@@ -24,6 +24,7 @@ api:
 
 packages:
   sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
+  #switch_restart: !include configs/switch/restart.yml
   button_confirm_restart: !include configs/button/confirm_restart.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml

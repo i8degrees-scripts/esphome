@@ -8,6 +8,10 @@
 # 1. esphome/psu1-relay-0.yaml.bck
 ---
 
+substitutions:
+  devicename: "yms-relay-1"
+  lower_devicename: "yms-relay-1"
+
 # Enable usage with Home Assistant APIs
 #
 # NOTE(JEFF): This has the side effect of restarting this 
@@ -43,7 +47,7 @@ web_server:
   version: 2
 
 esphome:
-  name: "yms-relay-1"
+  name: ${devicename}
   friendly_name: "(Repair Bench) Light #1"
   area: "Bedroom"
 

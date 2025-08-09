@@ -37,3 +37,8 @@ sensor:
       #id: temp_f_str
     #source: temp_f
 
+temp_f_str:
+  - platform: text_sensor
+    id: temp_f_str
+    source: temp_f
+

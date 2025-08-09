@@ -90,13 +90,15 @@ switch:
     restore_mode: RESTORE_DEFAULT_OFF
     icon: !secret switch_icon
     device_class: !secret switch_device_class
+
+  # type ?:
   - platform: gpio
     pin: GPIO13
     id: status_led
     name: status_led
     restore_mode: RESTORE_DEFAULT_ON
     # FIXME(JEFF): Refactor code; all of the new code needs to
-    # be relocated to mqtt section. See "MQTT Client Component" 
+    # be relocated to mqtt section. See "MQTT Client Component"
     on_turn_on:
       - switch.turn_on: status_led
       - logger.log: "DEBUG: status_led is ON"

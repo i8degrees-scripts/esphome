@@ -58,11 +58,12 @@ packages:
   webserver: !include configs/webserver.yml
   wifi: !include configs/wifi.yml
 
-#<<: !include configs/development.yml
-<<: !include configs/production.yml
+<<: !include configs/development.yml
+#<<: !include configs/production.yml
   
 esphome:
   name: ${devicename}
+  # TODO(JEFF): Remove `friendly_name`..?
   friendly_name: "pve1-psu-relay"
   area: "Bedroom"
 
@@ -70,7 +71,6 @@ esp8266:
   early_pin_init: false
 
 wifi:
-  output_power: 10.00
   # See [IMPORTANT][1] note
   #reboot_timeout: 0s
 

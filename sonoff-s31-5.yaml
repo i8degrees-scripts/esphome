@@ -70,7 +70,7 @@ packages:
 #<<: !include configs/production.yml
 
 wifi:
-  output_power: 15.00
+  output_power: 20.00
   # See [IMPORTANT][1] note
   reboot_timeout: 0s
 

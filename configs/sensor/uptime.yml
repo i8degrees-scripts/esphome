@@ -11,3 +11,18 @@ sensor:
     state_class: measurement
     device_class: duration
 
+  - platform: template
+    name: uptime_mins
+    #name: "Uptime in minutes"
+    update_interval: 1s
+    state_class: measurement
+    device_class: duration
+    filters:
+      - lambda: |-
+          return x / 60.00;
+    unit_of_measurement: "Uptime in minutes"
+
+# TODO
+#text_sensor:
+#  source: uptime_mins
+  

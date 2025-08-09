@@ -28,4 +28,4 @@ web_server:
   # have physical access to the hardware as you will have to re-
   # connect the serial comms before you can modify the firmware
   # further.
-  ota: true
+  #ota: true

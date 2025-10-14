@@ -30,9 +30,10 @@ sensor:
       - lambda: |-
           return x * (9.0/5.0) + 32.0;
     unit_of_measurement: "°F"
-
-temp_f_str:
-  - platform: text_sensor
-    id: temp_f_str
-    source: temp_f
+  # FIXME(JEFF): This configuration is broken because
+  # of the broken dependency above
+  #temp_f_str:
+    #- platform: text_sensor
+      #id: temp_f_str
+    #source: temp_f
 

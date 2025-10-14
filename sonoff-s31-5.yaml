@@ -38,7 +38,7 @@ ota:
 
 api:
   # See [IMPORTANT][1] note
-  reboot_timeout: 0s
+  #reboot_timeout: 0s
   encryption:
     key: !secret api5_key
 
@@ -69,14 +69,13 @@ packages:
 <<: !include configs/development.yml
 #<<: !include configs/production.yml
 
-wifi:
-  output_power: 20.00
+#wifi:
   # See [IMPORTANT][1] note
-  reboot_timeout: 0s
+  #reboot_timeout: 0s
 
-mqtt:
+#mqtt:
   # See [IMPORTANT][1] note
-  reboot_timeout: 0s
+  #reboot_timeout: 0s
 
 binary_sensor:
   - platform: gpio

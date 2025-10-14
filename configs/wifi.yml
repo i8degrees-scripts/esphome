@@ -9,7 +9,8 @@ wifi:
   domain: .ha.home
   # WARNING(JEFF): This value is likely to require further tweaks before
   # we can truly trust it as a default value!
-  output_power: 15.00
+  #output_power: 15.00
+  fast_connect: true # defaults to false
   networks:
     # syn_2g; primary AP
     - ssid: !secret wifi_ssid0

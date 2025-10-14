@@ -41,11 +41,6 @@ packages:
 #<<: !include configs/development.yml
 <<: !include configs/production.yml
 
-# IMPORTANT(JEFF): We do not have the space to support
-# version 3 of the webserver!
-web_server:
-  version: 2
-
 esphome:
   name: ${devicename}
   friendly_name: "(Repair Bench) Light #1"

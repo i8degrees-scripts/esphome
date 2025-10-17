@@ -5,14 +5,8 @@
 
 wifi:
   id: wifi_conn
-  # TODO(JEFF): Relocate power_save_mode (none) to esp8266 
-  # specific settings && set power_save_mode to light for
-  # ESP32
   power_save_mode: none # default for ESP8266
   domain: .ha.home
-  # WARNING(JEFF): This value is likely to require further tweaks before
-  # we can truly trust it as a default value!
-  #output_power: 15.00
   fast_connect: false  
   networks:
     # syn_2g; primary AP

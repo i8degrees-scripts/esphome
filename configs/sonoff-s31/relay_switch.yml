@@ -7,6 +7,10 @@
 #
 ---
 
+# 1. curl -v -X POST \
+#  "http://<ip>/switch/switch_relay/toggle" \
+# --digest -u <username>:<password>
+# web_server username and password
 switch:
   - platform: gpio
     name: "Relay"

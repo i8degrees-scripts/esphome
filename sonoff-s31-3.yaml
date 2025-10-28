@@ -20,9 +20,10 @@ api:
 <<: !include configs/globals.yml
 
 packages:
-  #ota: !include configs/ota.yml
+  ota: !include configs/ota.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
+  esp8266_wifi: !include configs/esp8266/wifi.yml
   logger_sonoff: !include configs/sonoff-s31/logger.yml
   mdns_host: !include configs/mdns.yml
   mqtt_client: !include configs/mqtt.yml
@@ -30,21 +31,16 @@ packages:
   prometheus: !include configs/prometheus.yml
   sensor_uptime: !include configs/sensor/uptime.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
+  sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
   sonoff_project: !include configs/sonoff-s31/project.yml
   sonoff_uart: !include configs/sonoff-s31/uart.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
   switch_restart: !include configs/switch/restart.yml
   webserver: !include configs/webserver.yml
-  wifi: !include configs/wifi.yml
 
-<<: !include configs/development.yml
-#<<: !include configs/production.yml
-
-ota:
-  - platform: esphome
-    #password: !secret ota_password
-    password: "abffc54758f6383fc4c48dfa592bbe41"
+# <<: !include configs/development.yml
+<<: !include configs/production.yml
 
 esphome:
   # IMPORTANT(JEFF): Match the filename 1:1 without file extension, including the prefixed `.`

@@ -42,7 +42,8 @@ packages:
   esp8266_nodemcuv2: !include configs/esp8266/nodemcuv2/platform.yml
   esp8266_project: !include configs/esp8266/project.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
-  esphome_ota: !include configs/ota.yml
+  esp8266_wifi: !include configs/esp8266/wifi.yml
+  ota: !include configs/ota.yml
   mdns_host: !include configs/mdns.yml
   mqtt_client: !include configs/mqtt.yml
   ntp_time: !include configs/time.yml
@@ -59,7 +60,6 @@ packages:
   switch_restart: !include configs/switch/restart.yml
   webmetrics_prometheus: !include configs/prometheus.yml
   webserver: !include configs/webserver.yml
-  wifi: !include configs/wifi.yml
 
 #substitutions:
   #devicename: esp-probe-1

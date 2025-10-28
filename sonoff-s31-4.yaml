@@ -42,6 +42,7 @@ packages:
   button_confirm_restart: !include configs/button/confirm_restart.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
+  esp8266_wifi: !include configs/esp8266/wifi.yml
   logger_sonoff: !include configs/sonoff-s31/logger.yml
   mdns_host: !include configs/mdns.yml
   mqtt_client: !include configs/mqtt.yml
@@ -56,7 +57,6 @@ packages:
   switch_confirm_restart: !include configs/switch/confirm_restart.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
   webserver: !include configs/webserver.yml
-  wifi: !include configs/wifi.yml
 
 <<: !include configs/development.yml
 #<<: !include configs/production.yml

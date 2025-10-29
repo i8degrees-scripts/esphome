@@ -13,12 +13,11 @@ wifi:
   # WARNING(JEFF): This value is likely to require further tweaks before
   # we can truly trust it as a default value!
   #output_power: 15.00
-  fast_connect: false  
+  fast_connect: false
   networks:
     # syn_2g; primary AP
     - ssid: !secret wifi_ssid0
       password: !secret wifi_ssid0_password
-      hidden: !secret wifi_ssid0_hidden
       priority: 100
     # NETGEAR11; failsafe backup AP
     #- ssid: !secret wifi_ssid1

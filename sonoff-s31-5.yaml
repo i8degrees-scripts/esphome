@@ -46,7 +46,6 @@ api:
 
 packages:
   #ota: !include configs/ota.yml
-  sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   #switch_restart: !include configs/switch/restart.yml
   button_confirm_restart: !include configs/button/confirm_restart.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
@@ -57,10 +56,11 @@ packages:
   mqtt_client: !include configs/mqtt.yml
   ntp_time: !include configs/time.yml
   sensor_uptime: !include configs/sensor/uptime.yml
-  sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
+  sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
   sonoff_project: !include configs/sonoff-s31/project.yml
+  sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   sonoff_uart: !include configs/sonoff-s31/uart.yml
   switch_confirm_restart: !include configs/switch/confirm_restart.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml

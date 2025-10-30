@@ -37,40 +37,30 @@ ota:
 
 packages:
   #ota: !include configs/ota.yml
-  #sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
-  #switch_restart: !include configs/switch/restart.yml
   button_confirm_restart: !include configs/button/confirm_restart.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
   esp8266_storage: !include configs/esp8266/flash_storage.yml
   esp8266_wifi: !include configs/esp8266/wifi.yml
+  http_prometheus: !include configs/prometheus.yml
+  httpd: !include configs/webserver.yml
   logger_sonoff: !include configs/sonoff-s31/logger.yml
-  mdns_host: !include configs/mdns.yml
-  mqtt_client: !include configs/mqtt.yml
-  ntp_time: !include configs/time.yml
-  prometheus: !include configs/prometheus.yml
+  mdns: !include configs/mdns.yml
+  mqtt: !include configs/mqtt.yml
+  ntpc: !include configs/time.yml
   sensor_uptime: !include configs/sensor/uptime.yml
   sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
   sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
   sonoff_gpios: !include configs/sonoff-s31/gpios.yml
   sonoff_project: !include configs/sonoff-s31/project.yml
+  sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   sonoff_uart: !include configs/sonoff-s31/uart.yml
   switch_confirm_restart: !include configs/switch/confirm_restart.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
-  webserver: !include configs/webserver.yml
 
-<<: !include configs/development.yml
-#<<: !include configs/production.yml
+<<: !include configs/production.yml
   
 esphome:
   name: ${devicename}
-  # TODO(JEFF): Remove `friendly_name`..?
-
-<<: !include configs/development.yml
-#<<: !include configs/production.yml
-  
-esphome:
-  name: ${devicename}
-  # TODO(JEFF): Remove `friendly_name`..?
   friendly_name: "pve1-psu-relay"
   area: "Bedroom"
 
@@ -134,12 +124,4 @@ sensor:
     name: "Daily Energy"
     power_id: power
     accuracy_decimals: 2
-
-switch:
-  - platform: gpio
-    name: "Relay"
-    pin: GPIO12
-    id: relay_switch
-    # restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
-    restore_mode: RESTORE_DEFAULT_ON
 

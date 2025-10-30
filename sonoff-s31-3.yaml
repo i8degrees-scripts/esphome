@@ -36,7 +36,8 @@ packages:
   sonoff_project: !include configs/sonoff-s31/project.yml
   sonoff_uart: !include configs/sonoff-s31/uart.yml
   switch_factory_reset: !include configs/switch/factory_reset.yml
-  switch_restart: !include configs/switch/restart.yml
+  sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
+  button_confirm_restart: !include configs/button/confirm_restart.yml
   webserver: !include configs/webserver.yml
 
 # <<: !include configs/development.yml
@@ -103,12 +104,4 @@ sensor:
     name: "Daily Energy"
     power_id: power
     accuracy_decimals: 2
-
-switch:
-  - platform: gpio
-    name: "Relay"
-    pin: GPIO12
-    id: relay_switch
-    restore_mode: RESTORE_DEFAULT_ON
-    #restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
 

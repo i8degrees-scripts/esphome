@@ -1,0 +1,132 @@
+# Sonoff S31 Smart WiFi Plug
+#
+# SEE ALSO
+# 1. https://devices.esphome.io/devices/Sonoff-S31
+# 2. curl -X POST http://sonoff-s31-8.ha.home/switch/relay/turn_on
+# 3. curl -X POST http://sonoff-s31-8.ha.home/switch/relay/turn_off
+#
+# [1]: IMPORTANT(JEFF): Avoid the potential scenario where lack 
+# of comms with this component invokes an automatic restart of 
+# the device node. This is by design and is intended to act as
+# an aid in automatic comms "healing".
+#
+# This particular smart plug serves a mission critical purpose
+# and is presently immune to the above "patching" only because
+# of the relay switch's restore_mode attribute being always on.
+# If this were to change inadvertedly, this patch is the only
+# other failsafe to not bringing our home Internet connection 
+# down every 15 minutes or so...
+---
+
+substitutions:
+  devicename: "sonoff-s31-8"
+  lower_devicename: "sonoff-s31-8"
+
+# Enable Home Assistant API
+api:
+  # See [IMPORTANT][1] note
+  reboot_timeout: 0s
+  encryption:
+    key: !secret api8_key
+
+<<: !include configs/globals.yml
+
+packages:
+  ota: !include configs/ota.yml
+  #sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
+  #switch_restart: !include configs/switch/restart.yml
+  button_confirm_restart: !include configs/button/confirm_restart.yml
+  esp8266_platform: !include configs/esp8266/esp12/platform.yml
+  esp8266_storage: !include configs/esp8266/flash_storage.yml
+  esp8266_wifi: !include configs/esp8266/wifi.yml
+  logger_sonoff: !include configs/sonoff-s31/logger.yml
+  mdns_host: !include configs/mdns.yml
+  mqtt_client: !include configs/mqtt.yml
+  ntp_time: !include configs/time.yml
+  prometheus: !include configs/prometheus.yml
+  sensor_uptime: !include configs/sensor/uptime.yml
+  sensor_wifi_diag: !include configs/sensor/wifi_diag.yml
+  sensor_wifi_signal: !include configs/sensor/wifi_signal.yml
+  sonoff_gpios: !include configs/sonoff-s31/gpios.yml
+  sonoff_project: !include configs/sonoff-s31/project.yml
+  sonoff_uart: !include configs/sonoff-s31/uart.yml
+  switch_confirm_restart: !include configs/switch/confirm_restart.yml
+  switch_factory_reset: !include configs/switch/factory_reset.yml
+  webserver: !include configs/webserver.yml
+
+#<<: !include configs/development.yml
+<<: !include configs/production.yml
+  
+esphome:
+  name: ${devicename}
+  area: "Bedroom"
+
+esp8266:
+  early_pin_init: false
+
+wifi:
+  # See [IMPORTANT][1] note
+  #reboot_timeout: 0s
+
+mqtt:
+  # See [IMPORTANT][1] note
+  #reboot_timeout: 0s
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Button"
+    on_press:
+      - switch.toggle: relay_switch
+  - platform: status
+    name: "Status"
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "Current"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+    voltage:
+      name: "Voltage"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+    power:
+      name: "Power"
+      accuracy_decimals: 2
+      id: power
+      filters:
+        - throttle_average: 60s
+    energy:
+      name: "Energy"
+      accuracy_decimals: 2
+      filters:
+        - throttle: 60s
+    apparent_power: #(only available with version 2024.3.0 or greater)
+      name: "Apparent Power"
+      filters:
+        - throttle_average: 60s
+    power_factor: #(only available with version 2024.3.0 or greater)
+      name: "Power Factor"
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 60s
+
+  - platform: total_daily_energy #(Optional, not specific to cse7766)
+    name: "Daily Energy"
+    power_id: power
+    accuracy_decimals: 2
+
+switch:
+  - platform: gpio
+    name: "Relay"
+    pin: GPIO12
+    id: relay_switch
+    # restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
+    restore_mode: RESTORE_DEFAULT_ON
+

@@ -46,8 +46,7 @@ api:
 
 packages:
   #ota: !include configs/ota.yml
-  #sensor_relay_switch: !include configs/sonoff-s31/sensor/relay_switch.yml
-  #sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
+  sonoff_relay_switch: !include configs/sonoff-s31/relay_switch.yml
   #switch_restart: !include configs/switch/restart.yml
   button_confirm_restart: !include configs/button/confirm_restart.yml
   esp8266_platform: !include configs/esp8266/esp12/platform.yml
@@ -127,12 +126,4 @@ sensor:
     name: "Daily Energy"
     power_id: power
     accuracy_decimals: 2
-
-switch:
-  - platform: gpio
-    name: "Relay"
-    pin: GPIO12
-    id: relay_switch
-    # restore_mode: ALWAYS_OFF # Powering the relay may cause damage or instability when the programmer is supplying Vcc.
-    restore_mode: RESTORE_DEFAULT_ON
 
